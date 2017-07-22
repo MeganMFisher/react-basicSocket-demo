@@ -15,9 +15,9 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    socket.on('from:server', d => {
+    socket.on('from:server', res => {
       this.setState({
-        allMessages: [...this.state.allMessages, d]
+        allMessages: [...this.state.allMessages, res]
       })
     })
   }
