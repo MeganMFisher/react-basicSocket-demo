@@ -7,34 +7,34 @@ export default class App extends Component {
   constructor() {
     super()
     this.state = {
-      data: [],
-      userInput: ''
+      allMessages: [],
+      message: ''
     }
-    this.updateInput = this.updateInput.bind(this)
-    this.sendTest = this.sendTest.bind(this)
+    this.handleInput = this.handleInput.bind(this)
+    this.sendMessage = this.sendMessage.bind(this)
   }
 
   componentDidMount() {
     socket.on('from:server', d => {
       this.setState({
-        data: [...this.state.data, d]
+        allMessages: [...this.state.allMessages, d]
       })
     })
   }
 
-  updateInput(e) {
+  handleInput(e) {
     this.setState({
-      userInput: e.target.value
+      message: e.target.value
     })
   }
 
-  sendTest() {
-    socket.emit('to:server', {message: this.state.userInput})
-    this.setState({userInput: ''})
+  sendMessage() {
+    socket.emit('to:server', {message: this.state.message})
+    this.setState({message: ''})
   }
 
   render() {
-    const messages = this.state.data.map((e, i) => {
+    const messages = this.state.allMessages.map((e, i) => {
       return (
         <p key={i}>{ e.message }</p>
       )
@@ -44,8 +44,8 @@ export default class App extends Component {
         <div className="App-header">
           <h1>Socket.io</h1>
         </div>
-        <input onChange={ this.updateInput } value={ this.state.userInput }/>
-        <button onClick={ this.sendTest }>Send</button>
+        <input onChange={ this.handleInput } value={ this.state.message }/>
+        <button onClick={ this.sendMessage }>Send</button>
         {messages}
       </div>
     );
